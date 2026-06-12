@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Homenagem para Minha Namorada</title>
+  <style>
+    :root {
+      --pink: #ff6fb5;
+      --rose: #ffd7ea;
+      --deep: #4b1d4f;
+      --white: #fffafc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.18), transparent 30%),
+        linear-gradient(135deg, #1b0a25 0%, #3d0f3a 45%, #7b2e6f 100%);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 18px 40px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 6vw, 3.6rem);
+      margin: 0 0 10px;
+      text-shadow: 0 4px 18px rgba(0,0,0,0.35);
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2.6vw, 1.15rem);
+      color: #ffe6f4;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(10px);
+      padding: 18px;
+    }
+
+    .carousel-wrap {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .carousel-box {
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+      min-height: 420px;
+      background: #130815;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.02);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .caption {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      border-radius: 14px;
+      background: rgba(10, 5, 14, 0.62);
+      color: var(--white);
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #2c0c2f;
+      background: linear-gradient(135deg, #ffe3f2, #ffb7dd);
+      box-shadow: 0 6px 18px rgba(255, 195, 228, 0.25);
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      border: 1px solid rgba(255,255,255,0.5);
+      cursor: pointer;
+    }
+
+    .dot.active { background: #ffd8ec; box-shadow: 0 0 0 4px rgba(255, 216, 236, 0.16); }
+
+    .music-card {
+      display: grid;
+      gap: 12px;
+      align-items: center;
+      text-align: left;
+    }
+
+    .music-card h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      color: #fff3fb;
+    }
+
+    audio {
+      width: 100%;
+      border-radius: 999px;
+      outline: none;
+    }
+
+    .note {
+      color: #ffeaf6;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .audio-play-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #2c0c2f;
+      background: linear-gradient(135deg, #ffe3f2, #ffb7dd);
+      box-shadow: 0 6px 18px rgba(255, 195, 228, 0.25);
+      width: fit-content;
+    }
+
+    @media (min-width: 920px) {
+      .carousel-wrap {
+        grid-template-columns: 1.3fr 0.9fr;
+      }
+      .music-card { align-self: stretch; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>Uma homenagem linda para você, meu amor</h1>
+      <p>Este site foi preparado com carinho para celebrar nossos momentos. Navegue pelas fotos e deixe a música tocar enquanto a emoção vem com cada lembrança.</p>
+    </section>
+
+    <section class="card carousel-wrap">
+      <article class="carousel-box" aria-label="Carrossel de fotos da nossa história">
+        <div id="slides"></div>
+        <div class="caption" id="caption">Carregando suas lembranças...</div>
+      </article>
+
+      <aside class="music-card">
+        <h2>🎶 Música de homenagem</h2>
+        <p class="note">Clique em play para ouvir a música e aproveitar esse momento especial com a gente.</p>
+        <audio controls autoplay loop>
+          <source src="midia/a thousand years - Christina Perri.mp3" type="audio/mpeg" />
+          Seu navegador não suporta áudio HTML5.
+        </audio>
+        <button type="button" id="playAudioBtn" class="audio-play-btn">Tocar música</button>
+        <p class="note">“Cada foto aqui guarda um pedaço do meu coração para você.”</p>
+      </aside>
+    </section>
+
+    <section class="controls">
+      <button type="button" id="prevBtn">← Anterior</button>
+      <div class="dots" id="dots"></div>
+      <button type="button" id="nextBtn">Próximo →</button>
+    </section>
+  </main>
+
+  <script>
+    const images = [
+      { src: 'midia/1.jpg', alt: 'Foto 1' },
+      { src: 'midia/2.jpg', alt: 'Foto 2' },
+      { src: 'midia/3.jpg', alt: 'Foto 3' },
+      { src: 'midia/4.jpg', alt: 'Foto 4' },
+      { src: 'midia/5.jpg', alt: 'Foto 5' },
+      { src: 'midia/6.jpg', alt: 'Foto 6' },
+      { src: 'midia/7.jpg', alt: 'Foto 7' },
+      { src: 'midia/8.jpg', alt: 'Foto 8' },
+      { src: 'midia/9.jpg', alt: 'Foto 9' },
+      { src: 'midia/10.jpg', alt: 'Foto 10' }
+    ];
+
+    const slides = document.getElementById('slides');
+    const dots = document.getElementById('dots');
+    const caption = document.getElementById('caption');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let currentIndex = 0;
+    let timer;
+
+    function renderSlides() {
+      slides.innerHTML = '';
+      dots.innerHTML = '';
+
+      images.forEach((item, index) => {
+        const slide = document.createElement('article');
+        slide.className = 'slide' + (index === currentIndex ? ' active' : '');
+        slide.innerHTML = `<img src="${item.src}" alt="${item.alt}">`;
+        slides.appendChild(slide);
+
+        const dot = document.createElement('button');
+        dot.className = 'dot' + (index === currentIndex ? ' active' : '');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `Ir para a foto ${index + 1}`);
+        dot.addEventListener('click', () => showSlide(index));
+        dots.appendChild(dot);
+      });
+
+      caption.textContent = `Foto ${currentIndex + 1} de ${images.length} — um pedacinho do nosso amor.`;
+    }
+
+    function showSlide(index) {
+      currentIndex = (index + images.length) % images.length;
+      renderSlides();
+      resetTimer();
+    }
+
+    function nextSlide() {
+      showSlide(currentIndex + 1);
+    }
+
+    function prevSlide() {
+      showSlide(currentIndex - 1);
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(nextSlide, 3500);
+    }
+
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    const audio = document.querySelector('audio');
+    const playAudioBtn = document.getElementById('playAudioBtn');
+
+    playAudioBtn.addEventListener('click', () => {
+      audio.play().catch(() => {
+        // O navegador ainda pode bloquear autoplay, mas o botão tenta iniciar o áudio.
+      });
+    });
+
+    renderSlides();
+    resetTimer();
+  </script>
+</body>
+</html>
