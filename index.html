@@ -1,309 +1,675 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Homenagem para Minha Namorada</title>
-  <style>
-    :root {
-      --pink: #ff6fb5;
-      --rose: #ffd7ea;
-      --deep: #4b1d4f;
-      --white: #fffafc;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel - Homenagem e Checklist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,0.18), transparent 30%),
-        linear-gradient(135deg, #1b0a25 0%, #3d0f3a 45%, #7b2e6f 100%);
-      color: var(--white);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
 
-    .page {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 24px 18px 40px;
-    }
+        /* Abas de Navegação */
+        .tab-navigation {
+            display: flex;
+            background: #2c3e50;
+            border-bottom: 3px solid #667eea;
+        }
 
-    .hero {
-      text-align: center;
-      margin-bottom: 18px;
-    }
+        .tab-btn {
+            flex: 1;
+            padding: 18px 20px;
+            border: none;
+            background: #2c3e50;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-    .hero h1 {
-      font-size: clamp(2rem, 6vw, 3.6rem);
-      margin: 0 0 10px;
-      text-shadow: 0 4px 18px rgba(0,0,0,0.35);
-    }
+        .tab-btn:hover {
+            background: #34495e;
+        }
 
-    .hero p {
-      font-size: clamp(1rem, 2.6vw, 1.15rem);
-      color: #ffe6f4;
-      max-width: 700px;
-      margin: 0 auto;
-      line-height: 1.5;
-    }
+        .tab-btn.active {
+            background: #667eea;
+            border-bottom-color: #f39c12;
+        }
 
-    .card {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 24px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
-      backdrop-filter: blur(10px);
-      padding: 18px;
-    }
+        /* Conteúdo das Abas */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
 
-    .carousel-wrap {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
-      align-items: center;
-    }
+        .tab-content.active {
+            display: block;
+        }
 
-    .carousel-box {
-      position: relative;
-      overflow: hidden;
-      border-radius: 18px;
-      min-height: 420px;
-      background: #130815;
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .slide {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transform: scale(1.02);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        /* Aba de Homenagem */
+        #homenagem-tab {
+            padding: 40px;
+            background: linear-gradient(135deg,
+              radial-gradient(circle at top, rgba(255,255,255,0.18), transparent 30%),
+              linear-gradient(135deg, #1b0a25 0%, #3d0f3a 45%, #7b2e6f 100%));
+            min-height: 600px;
+        }
 
-    .slide.active {
-      opacity: 1;
-      transform: scale(1);
-    }
+        .hero {
+            text-align: center;
+            margin-bottom: 18px;
+        }
 
-    .slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+        .hero h1 {
+            font-size: clamp(2rem, 6vw, 3.6rem);
+            margin: 0 0 10px;
+            text-shadow: 0 4px 18px rgba(0,0,0,0.35);
+            color: #ff6fb5;
+        }
 
-    .caption {
-      position: absolute;
-      left: 14px;
-      right: 14px;
-      bottom: 14px;
-      border-radius: 14px;
-      background: rgba(10, 5, 14, 0.62);
-      color: var(--white);
-      padding: 10px 12px;
-      font-size: 0.95rem;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-    }
+        .hero p {
+            font-size: clamp(1rem, 2.6vw, 1.15rem);
+            color: #ffe6f4;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
 
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-top: 10px;
-    }
+        .card {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 24px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+            padding: 18px;
+        }
 
-    button {
-      border: none;
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-weight: 700;
-      cursor: pointer;
-      color: #2c0c2f;
-      background: linear-gradient(135deg, #ffe3f2, #ffb7dd);
-      box-shadow: 0 6px 18px rgba(255, 195, 228, 0.25);
-    }
+        .carousel-wrap {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+            align-items: center;
+        }
 
-    button:hover { transform: translateY(-1px); }
+        .carousel-box {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            min-height: 420px;
+            background: #130815;
+        }
 
-    .dots {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: scale(1.02);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.4);
-      border: 1px solid rgba(255,255,255,0.5);
-      cursor: pointer;
-    }
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+        }
 
-    .dot.active { background: #ffd8ec; box-shadow: 0 0 0 4px rgba(255, 216, 236, 0.16); }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
 
-    .music-card {
-      display: grid;
-      gap: 12px;
-      align-items: center;
-      text-align: left;
-    }
+        .caption {
+            position: absolute;
+            left: 14px;
+            right: 14px;
+            bottom: 14px;
+            border-radius: 14px;
+            background: rgba(10, 5, 14, 0.62);
+            color: #fffafc;
+            padding: 10px 12px;
+            font-size: 0.95rem;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
 
-    .music-card h2 {
-      margin: 0;
-      font-size: 1.15rem;
-      color: #fff3fb;
-    }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
 
-    audio {
-      width: 100%;
-      border-radius: 999px;
-      outline: none;
-    }
+        .controls button {
+            border: none;
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #2c0c2f;
+            background: linear-gradient(135deg, #ffe3f2, #ffb7dd);
+            box-shadow: 0 6px 18px rgba(255, 195, 228, 0.25);
+        }
 
-    .note {
-      color: #ffeaf6;
-      font-size: 0.95rem;
-      line-height: 1.45;
-      margin: 0;
-    }
+        .controls button:hover { transform: translateY(-1px); }
 
-    .audio-play-btn {
-      border: none;
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-weight: 700;
-      cursor: pointer;
-      color: #2c0c2f;
-      background: linear-gradient(135deg, #ffe3f2, #ffb7dd);
-      box-shadow: 0 6px 18px rgba(255, 195, 228, 0.25);
-      width: fit-content;
-    }
+        .dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-    @media (min-width: 920px) {
-      .carousel-wrap {
-        grid-template-columns: 1.3fr 0.9fr;
-      }
-      .music-card { align-self: stretch; }
-    }
-  </style>
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            border: 1px solid rgba(255,255,255,0.5);
+            cursor: pointer;
+        }
+
+        .dot.active { background: #ffd8ec; box-shadow: 0 0 0 4px rgba(255, 216, 236, 0.16); }
+
+        .music-card {
+            display: grid;
+            gap: 12px;
+            align-items: center;
+            text-align: left;
+        }
+
+        .music-card h2 {
+            margin: 0;
+            font-size: 1.15rem;
+            color: #fff3fb;
+        }
+
+        audio {
+            width: 100%;
+            border-radius: 999px;
+            outline: none;
+        }
+
+        .note {
+            color: #ffeaf6;
+            font-size: 0.95rem;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .audio-play-btn {
+            border: none;
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #2c0c2f;
+            background: linear-gradient(135deg, #ffe3f2, #ffb7dd);
+            box-shadow: 0 6px 18px rgba(255, 195, 228, 0.25);
+            width: fit-content;
+        }
+
+        /* Aba de Checklist */
+        #checklist-tab {
+            padding: 0;
+            background: #f0f2f5;
+        }
+
+        .checklist-container {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        /* Estilos do Checklist */
+        .header-container {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            padding: 15px;
+            border-radius: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+            text-align: center;
+            border: 2px solid #2c3e50;
+            border-top: none;
+        }
+
+        .header-container h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 1.4em;
+            text-transform: uppercase;
+        }
+
+        .total-status {
+            font-weight: bold;
+            color: #c0392b;
+            font-size: 1.2em;
+            margin-top: 5px;
+        }
+
+        .college-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin: 20px;
+            border-top: 5px solid #2c3e50;
+        }
+
+        .college-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #2c3e50;
+            color: white;
+            padding: 10px 15px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .college-header h2 {
+            margin: 0;
+            font-size: 1.1em;
+        }
+
+        .college-counter {
+            background: #e67e22;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        h3 {
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+            color: #2980b9;
+            margin-top: 15px;
+            font-size: 1em;
+        }
+
+        .item {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.3);
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        label {
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.2s;
+        }
+
+        input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .done-college {
+            background: #27ae60 !important;
+        }
+
+        @media (max-width: 768px) {
+            .tab-btn {
+                font-size: 0.9em;
+                padding: 15px 10px;
+            }
+
+            #homenagem-tab {
+                padding: 20px;
+                min-height: 400px;
+            }
+
+            #homenagem-tab h1 {
+                font-size: 1.8em;
+            }
+
+            .college-section {
+                margin: 15px;
+            }
+
+            .carousel-wrap {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <main class="page">
-    <section class="hero">
-      <h1>Uma homenagem linda para você, meu amor</h1>
-      <p>Este site foi preparado com carinho para celebrar nossos momentos. Navegue pelas fotos e deixe a música tocar enquanto a emoção vem com cada lembrança.</p>
-    </section>
 
-    <section class="card carousel-wrap">
-      <article class="carousel-box" aria-label="Carrossel de fotos da nossa história">
-        <div id="slides"></div>
-        <div class="caption" id="caption">Carregando suas lembranças...</div>
-      </article>
+    <div class="container">
+        <!-- Navegação de Abas -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" onclick="openTab(event, 'homenagem')">💕 Homenagem</button>
+            <button class="tab-btn" onclick="openTab(event, 'checklist')">✓ Checklist</button>
+        </div>
 
-      <aside class="music-card">
-        <h2>🎶 Música de homenagem</h2>
-        <p class="note">Clique em play para ouvir a música e aproveitar esse momento especial com a gente.</p>
-        <audio controls autoplay loop>
-          <source src="midia/a thousand years - Christina Perri.mp3" type="audio/mpeg" />
-          Seu navegador não suporta áudio HTML5.
-        </audio>
-        <button type="button" id="playAudioBtn" class="audio-play-btn">Tocar música</button>
-        <p class="note">“Cada foto aqui guarda um pedaço do meu coração para você.”</p>
-      </aside>
-    </section>
+        <!-- Aba de Homenagem -->
+        <div id="homenagem" class="tab-content active">
+            <div id="homenagem-tab">
+                <section class="hero">
+                    <h1>Uma homenagem linda para você, meu amor</h1>
+                    <p>Este site foi preparado com carinho para celebrar nossos momentos. Navegue pelas fotos e deixe a música tocar enquanto a emoção vem com cada lembrança.</p>
+                </section>
 
-    <section class="controls">
-      <button type="button" id="prevBtn">← Anterior</button>
-      <div class="dots" id="dots"></div>
-      <button type="button" id="nextBtn">Próximo →</button>
-    </section>
-  </main>
+                <section class="card carousel-wrap">
+                    <article class="carousel-box" aria-label="Carrossel de fotos da nossa história">
+                        <div id="slides"></div>
+                        <div class="caption" id="caption">Carregando suas lembranças...</div>
+                    </article>
 
-  <script>
-    const images = [
-      { src: 'midia/1.jpg', alt: 'Foto 1' },
-      { src: 'midia/2.jpg', alt: 'Foto 2' },
-      { src: 'midia/3.jpg', alt: 'Foto 3' },
-      { src: 'midia/4.jpg', alt: 'Foto 4' },
-      { src: 'midia/5.jpg', alt: 'Foto 5' },
-      { src: 'midia/6.jpg', alt: 'Foto 6' },
-      { src: 'midia/7.jpg', alt: 'Foto 7' },
-      { src: 'midia/8.jpg', alt: 'Foto 8' },
-      { src: 'midia/9.jpg', alt: 'Foto 9' },
-      { src: 'midia/10.jpg', alt: 'Foto 10' }
-    ];
+                    <aside class="music-card">
+                        <h2>🎶 Música de homenagem</h2>
+                        <p class="note">Clique em play para ouvir a música e aproveitar esse momento especial com a gente.</p>
+                        <audio controls autoplay loop>
+                            <source src="midia/a thousand years - Christina Perri.mp3" type="audio/mpeg" />
+                            Seu navegador não suporta áudio HTML5.
+                        </audio>
+                        <button type="button" id="playAudioBtn" class="audio-play-btn">Tocar música</button>
+                        <p class="note">"Cada foto aqui guarda um pedaço do meu coração para você."</p>
+                    </aside>
+                </section>
 
-    const slides = document.getElementById('slides');
-    const dots = document.getElementById('dots');
-    const caption = document.getElementById('caption');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+                <section class="controls">
+                    <button type="button" id="prevBtn">← Anterior</button>
+                    <div class="dots" id="dots"></div>
+                    <button type="button" id="nextBtn">Próximo →</button>
+                </section>
+            </div>
+        </div>
 
-    let currentIndex = 0;
-    let timer;
+        <!-- Aba de Checklist -->
+        <div id="checklist" class="tab-content">
+            <div class="checklist-container">
+                <div class="header-container">
+                    <h1>Status Geral de Transferência</h1>
+                    <div class="total-status">Pendências Totais: <span id="total-pending">0</span></div>
+                </div>
 
-    function renderSlides() {
-      slides.innerHTML = '';
-      dots.innerHTML = '';
+                <!-- 1. UNICEPLAC -->
+                <div class="college-section" id="sec-uniceplac">
+                    <div class="college-header">
+                        <h2>1. UNICEPLAC (Gama, DF)</h2>
+                        <span class="college-counter">Faltam: <span class="sub-count">0</span></span>
+                    </div>
+                    <h3>Inscrição (Online)</h3>
+                    <div class="item"><input type="checkbox" id="unice1" onchange="updateAll()"><label for="unice1">Declaração de vínculo original [1]</label></div>
+                    <div class="item"><input type="checkbox" id="unice2" onchange="updateAll()"><label for="unice2">Histórico escolar original de Medicina [1]</label></div>
+                    <div class="item"><input type="checkbox" id="unice3" onchange="updateAll()"><label for="unice3">Programas/Ementas das disciplinas [1]</label></div>
+                    <div class="item"><input type="checkbox" id="unice4" onchange="updateAll()"><label for="unice4">Declaração de Veracidade (Anexo I) [2]</label></div>
+                    <h3>Matrícula (Físico)</h3>
+                    <div class="item"><input type="checkbox" id="unice5" onchange="updateAll()"><label for="unice5">Certificado de Conclusão do Ensino Médio [3]</label></div>
+                    <div class="item"><input type="checkbox" id="unice6" onchange="updateAll()"><label for="unice6">Documentos Pessoais (RG, CPF, Título, Foto) [3]</label></div>
+                </div>
 
-      images.forEach((item, index) => {
-        const slide = document.createElement('article');
-        slide.className = 'slide' + (index === currentIndex ? ' active' : '');
-        slide.innerHTML = `<img src="${item.src}" alt="${item.alt}">`;
-        slides.appendChild(slide);
+                <!-- 2. UNIFIMES -->
+                <div class="college-section" id="sec-unifimes">
+                    <div class="college-header">
+                        <h2>2. UNIFIMES (Trindade, GO)</h2>
+                        <span class="college-counter">Faltam: <span class="sub-count">0</span></span>
+                    </div>
+                    <h3>Inscrição (PDF Único)</h3>
+                    <div class="item"><input type="checkbox" id="fimes1" onchange="updateAll()"><label for="fimes1">Declaração de vínculo (com forma de ingresso e Enade) [4, 5]</label></div>
+                    <div class="item"><input type="checkbox" id="fimes2" onchange="updateAll()"><label for="fimes2">Histórico atualizado (detalhando Enade e disciplinas) [5, 6]</label></div>
+                    <div class="item"><input type="checkbox" id="fimes3" onchange="updateAll()"><label for="fimes3">Planos de Ensino carimbados/assinados [7, 8]</label></div>
+                    <div class="item"><input type="checkbox" id="fimes4" onchange="updateAll()"><label for="fimes4">Atestado de Conduta Acadêmica (Nada consta) [7, 9]</label></div>
+                    <div class="item"><input type="checkbox" id="fimes5" onchange="updateAll()"><label for="fimes5">Anexo I (Veracidade) e Anexo II (Ciência) [10]</label></div>
+                    <h3>Matrícula</h3>
+                    <div class="item"><input type="checkbox" id="fimes6" onchange="updateAll()"><label for="fimes6">Diploma EM + Autenticidade reconhecida em cartório [11]</label></div>
+                </div>
 
-        const dot = document.createElement('button');
-        dot.className = 'dot' + (index === currentIndex ? ' active' : '');
-        dot.type = 'button';
-        dot.setAttribute('aria-label', `Ir para a foto ${index + 1}`);
-        dot.addEventListener('click', () => showSlide(index));
-        dots.appendChild(dot);
-      });
+                <!-- 3. UNIEURO -->
+                <div class="college-section" id="sec-unieuro">
+                    <div class="college-header">
+                        <h2>3. UNIEURO (Brasília, DF)</h2>
+                        <span class="college-counter">Faltam: <span class="sub-count">0</span></span>
+                    </div>
+                    <h3>Inscrição (Online)</h3>
+                    <div class="item"><input type="checkbox" id="euro1" onchange="updateAll()"><label for="euro1">Histórico Escolar com código de validação [12]</label></div>
+                    <div class="item"><input type="checkbox" id="euro2" onchange="updateAll()"><label for="euro2">Programa das disciplinas (Ementas) [12]</label></div>
+                    <div class="item"><input type="checkbox" id="euro3" onchange="updateAll()"><label for="euro3">Declaração de vínculo e de conduta disciplinar [12]</label></div>
+                    <div class="item"><input type="checkbox" id="euro4" onchange="updateAll()"><label for="euro4">Ato regulatório (Autorização/Reconhecimento) [12]</label></div>
+                    <h3>Matrícula (Contratante)</h3>
+                    <div class="item"><input type="checkbox" id="euro5" onchange="updateAll()"><label for="euro5">Comprovante de Renda (min 2x a mensalidade) [13]</label></div>
+                </div>
 
-      caption.textContent = `Foto ${currentIndex + 1} de ${images.length} — um pedacinho do nosso amor.`;
-    }
+                <!-- 4. UniEVANGÉLICA -->
+                <div class="college-section" id="sec-evangelica">
+                    <div class="college-header">
+                        <h2>4. UniEVANGÉLICA (Anápolis, GO)</h2>
+                        <span class="college-counter">Faltam: <span class="sub-count">0</span></span>
+                    </div>
+                    <h3>Inscrição (PDF)</h3>
+                    <div class="item"><input type="checkbox" id="evan1" onchange="updateAll()"><label for="evan1">Histórico Escolar (Notas, CH e Enade) [14]</label></div>
+                    <div class="item"><input type="checkbox" id="evan2" onchange="updateAll()"><label for="evan2">Planos de ensino carimbados (folha por folha) [14]</label></div>
+                    <div class="item"><input type="checkbox" id="evan3" onchange="updateAll()"><label for="evan3">Declaração: Metodologias Ativas + Modular + Vínculo [15]</label></div>
+                    <div class="item"><input type="checkbox" id="evan4" onchange="updateAll()"><label for="evan4">Carta de Desvinculação (Motivos da saída/escolha) [15]</label></div>
+                    <div class="item"><input type="checkbox" id="evan5" onchange="updateAll()"><label for="evan5">Termo de Ciência (Anexo I) [15]</label></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    function showSlide(index) {
-      currentIndex = (index + images.length) % images.length;
-      renderSlides();
-      resetTimer();
-    }
+    <script>
+        function openTab(evt, tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
 
-    function nextSlide() {
-      showSlide(currentIndex + 1);
-    }
+            // Remove active class from all buttons
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
 
-    function prevSlide() {
-      showSlide(currentIndex - 1);
-    }
+            // Show the selected tab
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
 
-    function resetTimer() {
-      clearInterval(timer);
-      timer = setInterval(nextSlide, 3500);
-    }
+            // Save the current tab to localStorage
+            localStorage.setItem('activeTab', tabName);
+        }
 
-    prevBtn.addEventListener('click', prevSlide);
-    nextBtn.addEventListener('click', nextSlide);
+        // Slider functionality
+        const images = [
+            { src: 'midia/1.jpg', alt: 'Foto 1' },
+            { src: 'midia/2.jpg', alt: 'Foto 2' },
+            { src: 'midia/3.jpg', alt: 'Foto 3' },
+            { src: 'midia/4.jpg', alt: 'Foto 4' },
+            { src: 'midia/5.jpg', alt: 'Foto 5' },
+            { src: 'midia/6.jpg', alt: 'Foto 6' },
+            { src: 'midia/7.jpg', alt: 'Foto 7' },
+            { src: 'midia/8.jpg', alt: 'Foto 8' },
+            { src: 'midia/9.jpg', alt: 'Foto 9' },
+            { src: 'midia/10.jpg', alt: 'Foto 10' }
+        ];
 
-    const audio = document.querySelector('audio');
-    const playAudioBtn = document.getElementById('playAudioBtn');
+        const slides = document.getElementById('slides');
+        const dots = document.getElementById('dots');
+        const caption = document.getElementById('caption');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
 
-    playAudioBtn.addEventListener('click', () => {
-      audio.play().catch(() => {
-        // O navegador ainda pode bloquear autoplay, mas o botão tenta iniciar o áudio.
-      });
-    });
+        let currentIndex = 0;
+        let timer;
 
-    renderSlides();
-    resetTimer();
-  </script>
+        function renderSlides() {
+            slides.innerHTML = '';
+            dots.innerHTML = '';
+
+            images.forEach((item, index) => {
+                const slide = document.createElement('article');
+                slide.className = 'slide' + (index === currentIndex ? ' active' : '');
+                slide.innerHTML = `<img src="${item.src}" alt="${item.alt}">`;
+                slides.appendChild(slide);
+
+                const dot = document.createElement('button');
+                dot.className = 'dot' + (index === currentIndex ? ' active' : '');
+                dot.type = 'button';
+                dot.setAttribute('aria-label', `Ir para a foto ${index + 1}`);
+                dot.addEventListener('click', () => showSlide(index));
+                dots.appendChild(dot);
+            });
+
+            caption.textContent = `Foto ${currentIndex + 1} de ${images.length} — um pedacinho do nosso amor.`;
+        }
+
+        function showSlide(index) {
+            currentIndex = (index + images.length) % images.length;
+            renderSlides();
+            resetTimer();
+        }
+
+        function nextSlide() {
+            showSlide(currentIndex + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentIndex - 1);
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            timer = setInterval(nextSlide, 3500);
+        }
+
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        const audio = document.querySelector('audio');
+        const playAudioBtn = document.getElementById('playAudioBtn');
+
+        playAudioBtn.addEventListener('click', () => {
+            audio.play().catch(() => {
+                // O navegador ainda pode bloquear autoplay, mas o botão tenta iniciar o áudio.
+            });
+        });
+
+        // Checklist functionality
+        function updateAll() {
+            const sections = document.querySelectorAll('.college-section');
+            let totalPending = 0;
+
+            sections.forEach(section => {
+                const boxes = section.querySelectorAll('input[type="checkbox"]');
+                const totalInBox = boxes.length;
+                const checkedInBox = section.querySelectorAll('input[type="checkbox"]:checked').length;
+                const pendingInBox = totalInBox - checkedInBox;
+                
+                const subCounter = section.querySelector('.sub-count');
+                const collegeHeader = section.querySelector('.college-header');
+                const collegeBadge = section.querySelector('.college-counter');
+                
+                subCounter.innerText = pendingInBox;
+                totalPending += pendingInBox;
+
+                if (pendingInBox === 0) {
+                    collegeHeader.classList.add('done-college');
+                    collegeBadge.style.background = "#fff";
+                    collegeBadge.style.color = "#27ae60";
+                    collegeBadge.innerText = "✓ COMPLETO";
+                } else {
+                    collegeHeader.classList.remove('done-college');
+                    collegeBadge.style.background = "#e67e22";
+                    collegeBadge.style.color = "white";
+                    collegeBadge.innerHTML = `Faltam: <span class="sub-count">${pendingInBox}</span>`;
+                }
+            });
+
+            const totalDisplay = document.getElementById('total-pending');
+            totalDisplay.innerText = totalPending;
+
+            if (totalPending === 0) {
+                document.querySelector('.total-status').innerHTML = "🎉 TUDO PRONTO PARA AS TRANSFERÊNCIAS!";
+                document.querySelector('.total-status').style.color = "#27ae60";
+            } else {
+                document.querySelector('.total-status').innerHTML = `Pendências Totais: <span id="total-pending">${totalPending}</span>`;
+                document.querySelector('.total-status').style.color = "#c0392b";
+            }
+
+            // Save state to localStorage
+            saveChecklistState();
+        }
+
+        function saveChecklistState() {
+            const state = {};
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                state[checkbox.id] = checkbox.checked;
+            });
+            localStorage.setItem('checklistState', JSON.stringify(state));
+        }
+
+        function loadChecklistState() {
+            const state = JSON.parse(localStorage.getItem('checklistState') || '{}');
+            Object.keys(state).forEach(id => {
+                const checkbox = document.getElementById(id);
+                if (checkbox) {
+                    checkbox.checked = state[id];
+                }
+            });
+            updateAll();
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            renderSlides();
+            resetTimer();
+            loadChecklistState();
+            
+            // Restore the active tab
+            const activeTab = localStorage.getItem('activeTab') || 'homenagem';
+            const tabBtn = document.querySelector(`[onclick="openTab(event, '${activeTab}')"]`);
+            if (tabBtn) {
+                tabBtn.click();
+            }
+        };
+    </script>
+
 </body>
 </html>
