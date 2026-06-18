@@ -85,9 +85,7 @@
         /* Aba de Homenagem */
         #homenagem-tab {
             padding: 40px;
-            background: linear-gradient(135deg,
-              radial-gradient(circle at top, rgba(255,255,255,0.18), transparent 30%),
-              linear-gradient(135deg, #1b0a25 0%, #3d0f3a 45%, #7b2e6f 100%));
+            background: #ffffff;
             min-height: 600px;
         }
 
@@ -99,23 +97,25 @@
         .hero h1 {
             font-size: clamp(2rem, 6vw, 3.6rem);
             margin: 0 0 10px;
-            text-shadow: 0 4px 18px rgba(0,0,0,0.35);
-            color: #ff6fb5;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color: #000;
+            font-weight: 700;
         }
 
         .hero p {
             font-size: clamp(1rem, 2.6vw, 1.15rem);
-            color: #ffe6f4;
+            color: #333;
             max-width: 700px;
             margin: 0 auto;
             line-height: 1.5;
+            font-weight: 500;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #e0e0e0;
             border-radius: 24px;
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             padding: 18px;
         }
@@ -188,9 +188,13 @@
             color: #2c0c2f;
             background: linear-gradient(135deg, #ffe3f2, #ffb7dd);
             box-shadow: 0 6px 18px rgba(255, 195, 228, 0.25);
+            transition: all 0.3s;
         }
 
-        .controls button:hover { transform: translateY(-1px); }
+        .controls button:hover { 
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(255, 195, 228, 0.35);
+        }
 
         .dots {
             display: flex;
@@ -203,24 +207,33 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.4);
-            border: 1px solid rgba(255,255,255,0.5);
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(0,0,0,0.4);
             cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .dot.active { background: #ffd8ec; box-shadow: 0 0 0 4px rgba(255, 216, 236, 0.16); }
+        .dot.active { 
+            background: #ff6fb5; 
+            box-shadow: 0 0 0 4px rgba(255, 107, 181, 0.2);
+        }
 
         .music-card {
             display: grid;
             gap: 12px;
             align-items: center;
             text-align: left;
+            background: rgba(255, 107, 181, 0.05);
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid #ffe0f0;
         }
 
         .music-card h2 {
             margin: 0;
             font-size: 1.15rem;
-            color: #fff3fb;
+            color: #333;
+            font-weight: 700;
         }
 
         audio {
@@ -230,7 +243,7 @@
         }
 
         .note {
-            color: #ffeaf6;
+            color: #555;
             font-size: 0.95rem;
             line-height: 1.45;
             margin: 0;
@@ -246,6 +259,12 @@
             background: linear-gradient(135deg, #ffe3f2, #ffb7dd);
             box-shadow: 0 6px 18px rgba(255, 195, 228, 0.25);
             width: fit-content;
+            transition: all 0.3s;
+        }
+
+        .audio-play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 195, 228, 0.35);
         }
 
         /* Aba de Checklist */
